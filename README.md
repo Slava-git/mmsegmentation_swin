@@ -94,6 +94,16 @@ We can see in the images shown above that the results are not perfect and it is 
 
 Please refer to [get_started.md](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/get_started.md#installation) for installation and dataset preparation.
 
+**Notes:** 
+During the installation, it is important to :   
+* Install MMSegmentation in dev mode :
+```
+git clone https://github.com/open-mmlab/mmsegmentation.git
+cd mmsegmentation
+pip install -e .
+```
+* Copy the *mmcv_custom* and *mmseg* folders into the *mmsegmentation* folder
+
 ### Inference
 
 ```
