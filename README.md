@@ -25,6 +25,25 @@ As we can see, the last two classes don't refer to forest or tree, however we ad
 ### Dataset preparation
 To build our dataset, we have created some tiles from the IGN data. The dimensions of these tiles are 1000x1000 pixels (the resolution is 1 pixel = 50 cm, so it represents an area of 500x500 m). We mainly used data from the Hautes-Alpes department, and we took geographically spaced data to have as much diversity as possible and to limit the area without information (indeed, unfortunately some places lack of information).
 
+The file structure of the dataset is as followed :
+```none
+├── data
+│   ├── ign
+│   │   ├── annotations
+│   │   │   ├── training
+│   │   │   │   ├── xxx.png
+│   │   │   │   ├── yyy.png
+│   │   │   │   ├── zzz.png
+│   │   │   ├── validation
+│   │   ├── images
+│   │   │   ├── training
+│   │   │   │   ├── xxx.png
+│   │   │   │   ├── yyy.png
+│   │   │   │   ├── zzz.png
+│   │   │   ├── validation
+
+```
+
 ### Information on the training
 During the training, a ImageNet-22K pretrained model was used (available [here](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22k.pth)) and we added weights on each class because the dataset was not balanced in classes distribution. The weights are :  
 * Dense forest => 0.5
@@ -61,10 +80,10 @@ These latest results show that the model is capable of produce a segmentation ev
 ### Limitations
 We can see in the images shown above that the results are not perfect and it is because there are some imperfection in the data that limit the training. The two main limitations are :  
 * The satellite photos and the original segmentation were not made at the same time, so the segmentation is not always accurate. For example, we can see it in the following images : a zone is classed as "dense forest" whereas there are not many trees (that is why the segmentation after training, on the right, classed it as "sparse forest") :  
-<p float="left">
-  <img src="resources/Hautes-Alpes/original_c11_0915_6395.png" width="300" />
-  <img src="resources/Hautes-Alpes/c11_0915_6395.png" width="300" /> 
-</p>
+
+| Original segmentation             |  Segmentation after training |
+:-------------------------:|:-------------------------:
+![](resources/Hautes-Alpes/original_c11_0915_6395.png)  |  ![](resources/Hautes-Alpes/c11_0915_6395.png)
 
 * Sometimes there are zones without information (represented in black) in the dataset. Fortunately, we can ignore them during the training phase, but we also lose some information, which is a problem : we thus filtered the tiles that had more than 50% of pixels without information to try to improve the training.
 
@@ -76,6 +95,7 @@ We can see in the images shown above that the results are not perfect and it is 
 Please refer to [get_started.md](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/get_started.md#installation) for installation and dataset preparation.
 
 ### Inference
+
 ```
 # single-gpu testing
 python tools/test.py <CONFIG_FILE> <SEG_CHECKPOINT_FILE> --eval mIoU
@@ -94,6 +114,7 @@ python tools/test.py configs/swin/config_upernet_swin_large_patch4_window12_384x
 
 # Display segmentation results
 python tools/test.py configs/swin/config_upernet_swin_large_patch4_window12_384x384_60k_ign.py checkpoints/ign_60k_swin_large_patch4_window12_384.pth --show
+```
 
 ### Training
 
