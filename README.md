@@ -56,7 +56,7 @@ During the training, a ImageNet-22K pretrained model was used (available [here](
 ### Main results
 | Backbone | Method | Crop Size | Lr Schd | mIoU | config | model |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Swin-L | UPerNet | 384x384 | 60K | 54.22 | [config](configs/swin/config_upernet_swin_large_window12_384x384_60k_ign.py) | LIEN CHECKPOINT |
+| Swin-L | UPerNet | 384x384 | 60K | 54.22 | [config](configs/swin/config_upernet_swin_large_window12_384x384_60k_ign.py) | [model](https://drive.google.com/file/d/1EarMOBHx6meawa6izNXJUfXRCTzhKT2M/view) |
 
 Here are some comparison between the original segmentation and the segmentation that has been obtained after the training (Hautes-Alpes dataset) :  
 
@@ -139,7 +139,7 @@ tools/dist_train.sh <CONFIG_FILE> <GPU_NUM> --options model.pretrained=<PRETRAIN
 
 Example on the Ampli ANR project with the ImageNet-22K pretrained model (available [here](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22k.pth)) :  
 ```
-python tools/train.py configs/swin/config_upernet_swin_large_patch4_window12_384x384_60k_ign.py --options model.pretrained="./checkpoints/swin_large_patch4_window12_384_22k.pth"
+python tools/train.py configs/swin/config_upernet_swin_large_patch4_window12_384x384_60k_ign.py --options model.pretrained="./model/swin_large_patch4_window12_384_22k.pth"
 ```
 
 **Notes:** 
