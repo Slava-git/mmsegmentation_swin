@@ -56,7 +56,7 @@ During the training, a ImageNet-22K pretrained model was used (available [here](
 ### Main results
 | Backbone | Method | Crop Size | Lr Schd | mIoU | config | model |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| Swin-L | UPerNet | 384x384 | 60K | 54.22 | [config](configs/swin/config_upernet_swin_large_window12_384x384_60k_ign.py) | [model](https://drive.google.com/file/d/1EarMOBHx6meawa6izNXJUfXRCTzhKT2M/view) |
+| Swin-L | UPerNet | 384x384 | 60K | 54.22 | [config](configs/swin/config_upernet_swin_large_patch4_window12_384x384_60k_ign.py) | [model](https://drive.google.com/file/d/1EarMOBHx6meawa6izNXJUfXRCTzhKT2M/view) |
 
 Here are some comparison between the original segmentation and the segmentation that has been obtained after the training (Hautes-Alpes dataset) :  
 
