@@ -1,6 +1,6 @@
-# Swin Transformer for Semantic Segmentaion
+# Swin Transformer for Semantic Segmentation of satellite images
 
-This repo contains the supported code and configuration files to reproduce semantic segmentaion results of [Swin Transformer](https://arxiv.org/pdf/2103.14030.pdf). It is based on [mmsegmentaion](https://github.com/open-mmlab/mmsegmentation/tree/v0.11.0).
+This repo contains the supported code and configuration files to reproduce semantic segmentation results of [Swin Transformer](https://arxiv.org/pdf/2103.14030.pdf). It is based on [mmsegmentaion](https://github.com/open-mmlab/mmsegmentation/tree/v0.11.0).
 
 ## Application on the Ampli ANR project
 
@@ -10,9 +10,15 @@ This repo was used as part of the [Ampli ANR projet](https://projet.liris.cnrs.f
 The goal was to do semantic segmentation on satellite photos to precisely identify the species and the density of the trees present on the photos. However, due to the difficulty of recognizing the exact species of trees in the satellite photos, we decided to only learn to identify the density of the trees and forests.  
 
 ### Dataset sources
-To train and test the model, we used data provided by [IGN](https://geoservices.ign.fr/) which concern French departments (Hautes-Alpes in our case).  
+To train and test the model, we used data provided by [IGN](https://geoservices.ign.fr/) which concern French departments (Hautes-Alpes in our case).  The following datasets
+have been used to extract the different layers:
+* BD Ortho for the satellite images
+* BD Foret v2 for vegetation data
+* BD Topo for buildings and roads
 
-Initially, lots of classes are present in the data, but as said before, we reduce the number of classes (by merging original classes) and finally we have retained the following classes :  
+Important: note that the *data precision is 50cm per pixel.*
+
+Initially, lots of classes are present in the data, but as said before, we reduce the number of classes (by merging original classes) and finally we have retained the following classes:  
 * Dense forest
 * Sparse forest
 * Moor
@@ -20,12 +26,12 @@ Initially, lots of classes are present in the data, but as said before, we reduc
 * Building
 * Road
 
-As we can see, the last two classes don't refer to forest or tree, however we add them to not distort the training when buildings or roads are visible on satellite photos.
+As we can see, the last two classes do not refer to forest or tree, however we add them to not distort the training when buildings or roads are visible on satellite photos.
 
 ### Dataset preparation
 To build our dataset, we have created some tiles from the IGN data. The dimensions of these tiles are 1000x1000 pixels (the resolution is 1 pixel = 50 cm, so it represents an area of 500x500 m). We mainly used data from the Hautes-Alpes department, and we took geographically spaced data to have as much diversity as possible and to limit the area without information (indeed, unfortunately some places lack of information).
 
-The file structure of the dataset is as followed :
+The file structure of the dataset is as followed:
 ```none
 ├── data
 │   ├── ign
@@ -45,7 +51,7 @@ The file structure of the dataset is as followed :
 ```
 
 ### Information on the training
-During the training, a ImageNet-22K pretrained model was used (available [here](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22k.pth)) and we added weights on each class because the dataset was not balanced in classes distribution. The weights are :  
+During the training, a ImageNet-22K pretrained model was used (available [here](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22k.pth)) and we added weights on each class because the dataset was not balanced in classes distribution. The weights are:  
 * Dense forest => 0.5
 * Sparse forest => 1.31237
 * Moor => 1.38874
@@ -58,7 +64,7 @@ During the training, a ImageNet-22K pretrained model was used (available [here](
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | Swin-L | UPerNet | 384x384 | 60K | 54.22 | [config](configs/swin/config_upernet_swin_large_patch4_window12_384x384_60k_ign.py) | [model](https://drive.google.com/file/d/1EarMOBHx6meawa6izNXJUfXRCTzhKT2M/view) |
 
-Here are some comparison between the original segmentation and the segmentation that has been obtained after the training (Hautes-Alpes dataset) :  
+Here are some comparison between the original segmentation and the segmentation that has been obtained after the training (Hautes-Alpes dataset):  
 
 ![](resources/caption.png)
 
@@ -68,25 +74,25 @@ Here are some comparison between the original segmentation and the segmentation 
 ![](resources/Hautes-Alpes/original_c15_0955_6380.png)  |  ![](resources/Hautes-Alpes/c15_0955_6380.png)
 ![](resources/Hautes-Alpes/original_c19_0935_6390.png)  |  ![](resources/Hautes-Alpes/c19_0935_6390.png)
 
-We also tested the model on satellite photos from another French department to see if it could be generalized. We chose Cantal and here are some results :  
+We have also tested the model on satellite photos from another French department to see if the trained model generalizes to other locations. 
+We chose Cantal and here are a few samples of obtained results:  
 | Original segmentation             |  Segmentation after training |
 :-------------------------:|:-------------------------:
 ![](resources/Cantal/original_c7_0665_6475.png)  |  ![](resources/Cantal/c7_0665_6475.png)
 ![](resources/Cantal/original_c75_0665_6475.png)  |  ![](resources/Cantal/c75_0665_6475.png)
 ![](resources/Cantal/original_c87_0665_6475.png)  |  ![](resources/Cantal/c87_0665_6475.png)
 
-These latest results show that the model is capable of produce a segmentation even if the photos are located in another department and even if there are a lot of pixels without information (in black), which is encouraging.
+These latest results show that the model is capable of producing a segmentation even if the photos are located in another department and even if there are a lot of pixels without information (in black), which is encouraging.
 
 ### Limitations
-We can see in the images shown above that the results are not perfect and it is because there are some imperfection in the data that limit the training. The two main limitations are :  
-* The satellite photos and the original segmentation were not made at the same time, so the segmentation is not always accurate. For example, we can see it in the following images : a zone is classed as "dense forest" whereas there are not many trees (that is why the segmentation after training, on the right, classed it as "sparse forest") :  
+We can see in the images shown above that the results are not perfect. This is the result of the inherent limits of the data used during the training phase. The two main limitations are:  
+* The satellite photos and the original segmentation were not made at the same time, so the segmentation is not always accurate. For example, we can see it in the following images: a zone is segmented as "dense forest" even if there are not many trees (that is why the segmentation after training, on the right, classed it as "sparse forest"):  
 
 | Original segmentation             |  Segmentation after training |
 :-------------------------:|:-------------------------:
 ![](resources/Hautes-Alpes/original_c11_0915_6395.png)  |  ![](resources/Hautes-Alpes/c11_0915_6395.png)
 
-* Sometimes there are zones without information (represented in black) in the dataset. Fortunately, we can ignore them during the training phase, but we also lose some information, which is a problem : we thus filtered the tiles that had more than 50% of pixels without information to try to improve the training.
-
+* Sometimes there are zones without information (represented in black) in the dataset. Fortunately, we can ignore them during the training phase, but we also lose some information, which is a problem: we thus filtered the tiles that had more than 50% of pixels without information to try to improve the training.
 
 ## Usage
 
@@ -95,8 +101,8 @@ We can see in the images shown above that the results are not perfect and it is 
 Please refer to [get_started.md](https://github.com/open-mmlab/mmsegmentation/blob/master/docs/get_started.md#installation) for installation and dataset preparation.
 
 **Notes:** 
-During the installation, it is important to :   
-* Install MMSegmentation in dev mode :
+During the installation, it is important to:   
+* Install MMSegmentation in dev mode:
 ```
 git clone https://github.com/open-mmlab/mmsegmentation.git
 cd mmsegmentation
@@ -117,7 +123,7 @@ tools/dist_test.sh <CONFIG_FILE> <SEG_CHECKPOINT_FILE> <GPU_NUM> --eval mIoU
 tools/dist_test.sh <CONFIG_FILE> <SEG_CHECKPOINT_FILE> <GPU_NUM> --aug-test --eval mIoU
 ```
 
-Example on the Ampli ANR project :  
+Example on the Ampli ANR project:  
 ```
 # Evaluate checkpoint on a single GPU
 python tools/test.py configs/swin/config_upernet_swin_large_patch4_window12_384x384_60k_ign.py checkpoints/ign_60k_swin_large_patch4_window12_384.pth --eval mIoU
@@ -155,6 +161,11 @@ python tools/train.py configs/swin/config_upernet_swin_large_patch4_window12_384
   journal={arXiv preprint arXiv:2103.14030},
   year={2021}
 }
+```
+
+## Citing this work 
+```
+TODO
 ```
 
 ## Other Links
