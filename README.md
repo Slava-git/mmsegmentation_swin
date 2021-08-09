@@ -115,6 +115,7 @@ pip install -e .
 * Copy the *mmcv_custom* and *mmseg* folders into the *mmsegmentation* folder
 
 ### Inference
+The pre-trained model (i.e. checkpoint file) for satellite image segmentation is available for download [here](https://drive.google.com/file/d/1EarMOBHx6meawa6izNXJUfXRCTzhKT2M/view?usp=sharing).
 
 ```
 # single-gpu testing
