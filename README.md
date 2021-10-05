@@ -53,6 +53,7 @@ The file structure of the dataset is as follows:
 │   │   │   ├── validation
 
 ```
+The dataset is available on download [here](https://drive.google.com/file/d/1y73mUPzS5Hhq1RjPXc9bxch-Nv6HlJem/view?usp=sharing).
 
 ### Information on the training
 During the training, a ImageNet-22K pretrained model was used (available [here](https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22k.pth)) and we added weights on each class because the dataset was not balanced in classes distribution. The weights we have used are:  
