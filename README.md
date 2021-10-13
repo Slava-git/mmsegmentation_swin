@@ -170,8 +170,16 @@ python tools/train.py configs/swin/config_upernet_swin_large_patch4_window12_384
 ```
 
 ## Citing this work 
+See the complete description of this work in the [dedicated arXiv paper](https://arxiv.org/abs/2110.05812). If you use this work, please cite it:
 ```
-TODO
+@misc{guerin2021satellite,
+      title={Satellite Image Semantic Segmentation}, 
+      author={Eric Guérin and Killian Oechslin and Christian Wolf and Benoît Martinez},
+      year={2021},
+      eprint={2110.05812},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
 ```
 
 ## Other Links
