@@ -2,7 +2,7 @@
 
 This repo contains the supported code and configuration files to reproduce semantic segmentation results of [Swin Transformer](https://arxiv.org/pdf/2103.14030.pdf). 
 It is based on [mmsegmentaion](https://github.com/open-mmlab/mmsegmentation/tree/v0.11.0). In addition, we provide pre-trained models for the semantic segmentation
-of satellite images into basic classes (vegetation, buildings, roads).
+of satellite images into basic classes (vegetation, buildings, roads). The full description of this work is [available on arXiv](https://arxiv.org/abs/2110.05812).
 
 ## Application on the Ampli ANR project
 
